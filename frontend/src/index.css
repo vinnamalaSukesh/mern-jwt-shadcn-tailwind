@@ -3,7 +3,16 @@
 @tailwind utilities;
 .GreatVibes {font-family: 'Great Vibes';}
 @custom-variant dark (&:is(.dark *));
+@layer utilities {
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
 
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

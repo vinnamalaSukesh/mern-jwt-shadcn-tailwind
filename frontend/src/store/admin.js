@@ -1,23 +1,13 @@
-
 import { create } from "zustand";
+
 const useAdmin = create((set) => ({
-    admin : {uname: "",email: "",agents: [],tasks: []},
-    setAdmin : (Admin) => set({admin:Admin}),
+    admin : {_id:'',Name : '',email : ''},
+    tasks :[],
+    setAdmin : (Admin) => set((state)=>({admin : {...state.admin,...Admin}})),
 
-    addAgent : (agent) =>
-        set((state)=>({admin:{...state.admin,agents:[...state.admin.agents,agent]}})),
-
-    removeAgent : (agentId) =>
-        set((state)=>({admin:{...state.admin,agents:
-            [state.admin.agents.filter((agent)=>agentId !== agent._id)]}})),
-    
-    Addtask : (Task) =>
-        set((state)=>({admin:{...state.admin,tasks:[...state.tasks,Task]}})),
-
-    AddTasks : (Tasks) =>
-        set((state)=>({admin:{...state.admin,tasks:[...state.admin.tasks,...Tasks]}})),
-
-    removeTask : (TaskId) =>
-        set((state)=>({admin:{...state.admin,tasks:[...state.admin.tasks.filter((task)=> task._id !== TaskId)]}}))
+    setAdminTasks : (Tasks) => set({tasks:Tasks}),
+    addAdminTask : (Task) => set((state)=>({tasks:[...state.tasks,Task]})),
+    addAdminTasks : (Tasks) => set((state)=>({tasks:[...state.tasks,...Tasks]})),
+    removeAdminTask : (taskId) => set((state)=>({tasks:[...state.tasks.filter((task)=> taskId !== task)]}))
 }))
 export default useAdmin

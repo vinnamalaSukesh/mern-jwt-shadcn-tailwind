@@ -10,17 +10,19 @@ export default function LoginRegister() {
     const [uname,setUname] = useState("")
     const [email, setEmail] = useState("")
     const [pwd, setPwd] = useState("")
-    const [admin, setAdmin] = useState("")
     const {theme,setTheme} = useTheme()
     const navigate = useNavigate()
 
-    const handleSubmit = async () => {
+    const handleSubmit = async() => {
         if (form === "Login") {
             try {
-                const res = await axios.post('http://localhost:3000/Login', { admin, email, pwd })
+                const res = await axios.post('http://localhost:3000/Login', { email, pwd,type : option})
                 if (res.status === 200) {
                     localStorage.setItem('token', res.data.token)
-                    navigate('/home')
+                    if(res.data.role === 'Admin')
+                    { navigate('/admin') }
+                    else
+                    { navigate('/agent') }
                 }
                 else {
                     alert('Login details not match')
@@ -46,7 +48,7 @@ export default function LoginRegister() {
         }
     }
     return (
-        <div className="h-[100vh] w-[100vw] flex flex-col items-center justify-between">
+        <div className="min-h-[100vh] h-auto w-[100vw] flex flex-col items-center justify-between overflow-x-hidden gap-10">
             <div className="h-[8vh] shadow-[0px_0px_5px_black] flex items-center justify-center w-full dark:shadow-[0px_0px_5px_white]"><p className="text-3xl GreatVibes font-bold text-blue-950 dark:text-blue-50">Taskify</p>
             <button onClick={()=>setTheme(theme === "dark" ? "light" : "dark")} className="absolute right-[5vw] bg-black dark:bg-white rounded-full w-[35px] h-[35px] dark:shadow-[0px_0px_5px_white]">
             { theme === "dark"?
@@ -55,6 +57,8 @@ export default function LoginRegister() {
             }
             </button>
             </div>
+
+            <a href="https://www.canva.com/design/DAGjdgv2ouI/_bnDE0u-86XodSpghqe2IA/view?utm_content=DAGjdgv2ouI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hda5b67f9cf" className="text-2xl underline italic">OBJECTIVE</a>
 
             <div className="shadow-[0px_0px_5px_black] p-5 rounded-md flex flex-col gap-5 items-center justify-between dark:shadow-[0px_0px_3px_white] w-[300px]">
                 <div className="w-full flex items-center justify-between">
@@ -67,8 +71,6 @@ export default function LoginRegister() {
                         <option className="dark:text-black dark:bg-white" value={"Agent"}>Login as agent</option>
                     </select> : null
                 }
-                {option === 'Agent' & form === 'Login' ?
-                    <input type="email" value={admin} onChange={(e)=>{setAdmin(e.target.value)}} placeholder="Enter admin email :" className="p-2 rounded-sm shadow-[0px_0px_3px_black] px-8 dark:shadow-[0px_0px_2px_white]" />: null}
                 {form !== "Login" &&
                     <input type="text" value={uname} onChange={(e) => setUname(e.target.value)} placeholder="Enter username : " className="shadow-[0px_0px_3px_black] dark:shadow-[0px_0px_2px_white] p-2 rounded-sm px-8" />}
                 <input type="email" placeholder="Enter email : " className="p-2 shadow-[0px_0px_3px_black] rounded-sm px-8 dark:shadow-[0px_0px_2px_white]" value={email} onChange={(e) => setEmail(e.target.value)} />
